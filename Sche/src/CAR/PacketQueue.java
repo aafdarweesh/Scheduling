@@ -30,7 +30,13 @@ public class PacketQueue {
 
 	public void print() {
 		for (int i = 0; i < packetQueue.size(); i++) {
-			System.out.println(packetQueue.get(i).type);
+			System.out.print("ID "+packetQueue.get(i).id);
+			System.out.print(", Type "+packetQueue.get(i).type);
+			System.out.print(", arrival time "+packetQueue.get(i).arrivelTime);
+			System.out.print(", service time "+packetQueue.get(i).serviceTime);
+			System.out.print(", destination "+packetQueue.get(i).destination);
+			System.out.println(", source "+packetQueue.get(i).source);
+			
 		}
 	}
 
