@@ -51,8 +51,7 @@ public class Generator {
 		numOfpacketType = in.nextInt();
 
 		for (int i = 0; i < numOfpacketType; i++) {
-			System.out.print("Enter the number of package of type %d   :" + " "
-					+ (i + 1));
+			System.out.print("Enter the number of package of type "+ (i + 1)  + " :");
 			in = new Scanner(System.in);
 			numOfpacket = in.nextInt();
 			numOfPacketList.add(numOfpacket); // storing the number of packets
@@ -67,8 +66,8 @@ public class Generator {
 		for (int i = 0; i < numOfpacketType; i++) // storing the service time
 													// for each package
 		{
-			System.out.print("\nEnter the service time for package %d  :"
-					+ (i + 1));
+			System.out.print("\nEnter the service time for package"
+					+ (i + 1) + " :");
 			Scanner in = new Scanner(System.in);
 			packageTime = in.nextInt();
 			serviceTimeForEachPacket.add(packageTime);
@@ -116,20 +115,23 @@ public class Generator {
 				Random rand = new Random();
 				Random rand2 = new Random();
 
-				int randomNum = rand.nextInt((general.allNodes.size() - 1) + 1) + 1;
+				int randomNum = rand.nextInt((numberOfNodes - 1) + 1);
 				int randomNum2 = rand2
-						.nextInt((general.allNodes.size() - 1) + 1) + 1;
+						.nextInt((numberOfNodes - 1) + 1);
 
 				destination = randomNum;
 				source = randomNum2;
 				while (source == destination) {
-					randomNum = rand.nextInt((general.allNodes.size() - 1) + 1) + 1;
+					randomNum = rand.nextInt((numberOfNodes - 1) + 1);
 					destination = randomNum;
 				}
 
 				Packet p = new Packet(j + 1, destination, source, 0,
 						serviceTimeForEachPacket.get(j), 2 * j, idcounter++);
-
+				
+				
+				System.out.println("Packet id" + (idcounter - 1) + ", source : " + source + " destination : "+ destination);
+				
 				/*
 				 * p.destination = destination; p.source = source; p.serviceTime
 				 * = serviceTimeForEachPacket.get(j); p.type = j + 1;
@@ -207,14 +209,19 @@ public class Generator {
 		}
 	}
 
+
 	void Run() {
+		
+		GenerateNodes();
 
 		storeNumberofPacket();
 		storeServiceTimeForPacket();
+		
 		storeArrivalRate();
+		storeArrivalTime();
 		storeGenaratedPackets();
 		GenerateConnectionBetweenNodes();
-		GenerateNodes();
+		
 
 	}
 
