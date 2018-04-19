@@ -73,6 +73,32 @@ public class GeneralInfo {
 		}
 		
 		
+		for(int i = 0; i < allNodes.size(); ++i){
+			allNodes.get(i).Run();
+		}
+		
+		
+	}
+	
+	public void printToSystem()
+	{
+		System.out.println("//////////////////////////////////////");
+		System.out.println("The time counter   "+timeCounter);
+		System.out.println("//////////////////////////////////////");
+		for (int i=0;i<allNodes.size();++i)
+		{
+			System.out.println("Node : "+ allNodes.get(i).id + ", Not Failure  :" + allNodes.get(i).failure + ", The status : "+ allNodes.get(i).status);
+		
+			 System.out.println("the buffer content   ");
+			 allNodes.get(i).buffer.print();
+			 System.out.println("the expected Packets content   ");
+			 allNodes.get(i).printExpectedPacketsContent();
+			 System.out.println();
+			 System.out.println("=========================================");
+			
+		}
+		
+		 
 	}
 	
 	
