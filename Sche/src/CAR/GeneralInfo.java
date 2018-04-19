@@ -17,7 +17,7 @@ public class GeneralInfo {
 	ArrayList<Node> allNodes;
 	ArrayList<Packet> delivered; // list of delivered packets
 	ArrayList<Packet> dropped;
-	int[][] nodesConnections;
+	int[][] nodesConnections; //the links between the nodes
 
 	GeneralInfo() {
 		this.timeCounter = 0;
@@ -34,25 +34,6 @@ public class GeneralInfo {
 
 	}
 
-	// this function will define the connection between the nodes
-	public void GenerateConnectionBetweenNodes() {
-		int n = this.allNodes.size();
-		this.nodesConnections = new int[n][n];
-		Random rand = new Random();
-		int rando;
-		for (int i = 0; i < n; ++i) {
-			for (int j = 0; j < n; ++j) {
-
-				if (i == j || this.nodesConnections[i][j] == 1)
-					continue;
-				this.nodesConnections[i][j] = this.nodesConnections[j][i] = 0;
-				rando = rand.nextInt(50) + 1;
-				if (rando > 35)
-					this.nodesConnections[i][j] = this.nodesConnections[j][i] = 1;
-			}
-		}
-	}
-
 	public boolean CheckNodeStatus(int nodeId) {
 		return this.allNodes.get(nodeId).failure;
 	}
@@ -65,6 +46,34 @@ public class GeneralInfo {
 		int destination;
 		destination = newPacket.destination;
 		allNodes.get(destination).expectedPackets.add(newPacket);
-
 	}
+	
+	
+	public void Run(Generator generator){
+		//genaratedPackets
+		this.timeCounter++; //change the current time
+		
+		
+		
+		for(int i = 0; i < generator.totalNumOfPackets; ++i){
+			Packet currentPacket = generator.genaratedPackets.get(i);
+			if(currentPacket.arrivelTime == this.timeCounter){
+				
+				int source = currentPacket.source;
+				//int destination = currentPacket.destination;
+				
+				boolean checkIfFullBuffer = this.allNodes.get(source).buffer.full();
+				if(checkIfFullBuffer == false){
+					this.allNodes.get(source).buffer.Push(currentPacket);
+					addToNodeExpected(currentPacket);
+				}else{
+					currentPacket.arrivelTime++;
+				}
+			}
+		}
+		
+		
+	}
+	
+	
 }
