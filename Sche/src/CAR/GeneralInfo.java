@@ -37,18 +37,18 @@ public class GeneralInfo {
 	public boolean CheckNodeStatus(int nodeId) {
 		return this.allNodes.get(nodeId).failure;
 	}
-
+/*
 	public void PushToNodeBuffer(int nodeId, Packet newPacket) {
-		allNodes.get(nodeId).buffer.Push(newPacket);
+		allNodes.get(nodeId).buffer.Push(this,newPacket);
 	}
-
+*/
 	public void addToNodeExpected(Packet newPacket) {
 		int destination;
 		destination = newPacket.destination;
 		allNodes.get(destination).expectedPackets.add(newPacket);
 	}
 	
-	
+	/*
 	public void Run(Generator generator){
 		//genaratedPackets
 		this.timeCounter++; //change the current time
@@ -64,7 +64,7 @@ public class GeneralInfo {
 				
 				boolean checkIfFullBuffer = this.allNodes.get(source).buffer.full();
 				if(checkIfFullBuffer == false){
-					this.allNodes.get(source).buffer.Push(currentPacket);
+					this.allNodes.get(source).buffer.packetQueue.add(currentPacket);
 					addToNodeExpected(currentPacket);
 				}else{
 					currentPacket.arrivelTime++;
@@ -79,7 +79,7 @@ public class GeneralInfo {
 		
 		
 	}
-	
+	*/
 	public void printToSystem()
 	{
 		System.out.println("//////////////////////////////////////");
@@ -99,6 +99,37 @@ public class GeneralInfo {
 		}
 		
 		 
+	}
+	
+	
+	public void LastInfo(){
+		System.out.println("numberOfDroppedPackets : " + numberOfDroppedPackets);
+		System.out.println("rerequestedPackets : " + rerequestedPackets);
+		System.out.println("limitedTimeForPacket : " + limitedTimeForPacket);
+		System.out.println("packetDeliveredMoreThanOneTime : " + packetDeliveredMoreThanOneTime);
+		
+		System.out.println("List of Delievered packets : ");
+		for(int i = 0 ; i < delivered.size(); ++i){
+			System.out.print("ID "+delivered.get(i).id);
+			System.out.print(", Type "+delivered.get(i).type);
+			System.out.print(", arrival time "+delivered.get(i).arrivelTime);
+			System.out.print(", service time "+delivered.get(i).serviceTime);
+			System.out.print(", destination "+delivered.get(i).destination);
+			System.out.println(", source "+delivered.get(i).source);
+		}
+		
+		
+		System.out.println("List of Dropped packets : ");
+		for(int i = 0 ; i < dropped.size(); ++i){
+			System.out.print("ID "+dropped.get(i).id);
+			System.out.print(", Type "+dropped.get(i).type);
+			System.out.print(", arrival time "+dropped.get(i).arrivelTime);
+			System.out.print(", service time "+dropped.get(i).serviceTime);
+			System.out.print(", destination "+dropped.get(i).destination);
+			System.out.println(", source "+dropped.get(i).source);
+		}
+		
+		
 	}
 	
 	
