@@ -73,7 +73,10 @@ public class Node {
 					// check of the following node in the path of the packet is
 					// available or not
 					if (generalInfo.CheckNodeStatus(nextNodeId) == true) {
-						generalInfo.PushToNodeBuffer(nextNodeId, currentPacket);
+						
+						
+						generalInfo.allNodes.get(nextNodeId).buffer.Push(currentPacket, generalInfo);
+						//generalInfo.PushToNodeBuffer(nextNodeId, currentPacket);
 						// means that the following node has a failure
 					} else {
 						// here we request a new path for the node from the
@@ -89,7 +92,11 @@ public class Node {
 						nextNodeId = this.currentPacket.path[0];
 						// the check for the status of the following node will
 						// take place in the server path check
-						generalInfo.PushToNodeBuffer(nextNodeId, currentPacket);
+						
+						
+						
+						//generalInfo.PushToNodeBuffer(nextNodeId, currentPacket);
+						generalInfo.allNodes.get(nextNodeId).buffer.Push(currentPacket, generalInfo);
 
 					}
 					// in case that this packet is not mine and has no path I
@@ -108,7 +115,11 @@ public class Node {
 					int nextNodeId = this.currentPacket.path[0];
 					// the check for the status of the following node will take
 					// place in the server path check
-					generalInfo.PushToNodeBuffer(nextNodeId, currentPacket);
+					
+					
+					
+					//generalInfo.PushToNodeBuffer(nextNodeId, currentPacket);
+					generalInfo.allNodes.get(nextNodeId).buffer.Push(currentPacket, generalInfo);
 				}
 			}// if the buffer is empty and the status is free do nothing (no
 				// transmitting or executing)
@@ -157,7 +168,7 @@ public class Node {
 				newPacket.source, generalInfo.timeCounter,
 				newPacket.serviceTime, newPacket.size, newPacket.id);
 
-		this.buffer.Push(p);
+		this.buffer.Push(p,generalInfo);
 	}
 	public void printExpectedPacketsContent()
 	{
