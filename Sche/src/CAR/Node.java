@@ -159,4 +159,18 @@ public class Node {
 
 		this.buffer.Push(p);
 	}
+	public void printExpectedPacketsContent()
+	{
+		for (int i=0;i<expectedPackets.size();++i)
+		{
+			System.out.print(" Packets ID "+expectedPackets.get(i).id);
+			System.out.print(", Packets arrivel Time "+expectedPackets.get(i).arrivelTime);
+			System.out.print(", Packets service Time "+expectedPackets.get(i).serviceTime);
+			System.out.print(", Packets destination "+expectedPackets.get(i).destination);
+			System.out.print(", Packets source  "+expectedPackets.get(i).source);
+			
+			
+			
+		}
+	}
 }
