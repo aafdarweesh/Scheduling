@@ -16,45 +16,20 @@ public class Packet {
 	int id; //packet id to track the packet 
 	
 	
+	Packet(int ty, int des, int so, int arrT, int sT, int size, int id){
+		this.type = ty;
+		this.destination = des;
+		this.source = so;
+		this.pointInPath = 0;
+		this.arrivelTime = arrT;
+		this.serviceTime = sT;
+		this.startServiceTime = 0;
+		this.distanceTraveled = 0;
+		this.hasPath = false;
+		this.size = size;
+		this.id = id;
+	}
 	
-	
-	public int getType() {
-		return type;
-	}
-	public void setType(int type) {
-		this.type = type;
-	}
-	public int getDestination() {
-		return destination;
-	}
-	public void setDestination(int destination) {
-		this.destination = destination;
-	}
-
-	public int[] getPath() {
-		return path;
-	}
-	public void setPath(int[] path) {
-		this.path = path;
-	}
-	public int getPointInPath() {
-		return pointInPath;
-	}
-	public void setPointInPath(int pointInPath) {
-		this.pointInPath = pointInPath;
-	}
-	public int getArrivelTime() {
-		return arrivelTime;
-	}
-	public void setArrivelTime(int arrivelTime) {
-		this.arrivelTime = arrivelTime;
-	}
-	public int getServiceTime() {
-		return serviceTime;
-	}
-	public void setServiceTime(int serviceTime) {
-		this.serviceTime = serviceTime;
-	}
 	
 }
 
