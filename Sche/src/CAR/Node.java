@@ -20,19 +20,18 @@ public class Node {
 								// nodes...etc)
 	ArrayList<Packet> expectedPackets;
 
-	Node(int newid, Server s, GeneralInfo g){
-		this.id = newid; //the id of the node given in the initialization
+	Node(int newid, Server s, GeneralInfo g) {
+		this.id = newid; // the id of the node given in the initialization
 		this.buffer = new PacketQueue();
 		this.failure = true;
 		this.status = true;
-		this.server = s; //the main server
-		this.generalInfo = g; //the main generalInformation class
+		this.server = s; // the main server
+		this.generalInfo = g; // the main generalInformation class
 		this.expectedPackets = new ArrayList<Packet>();
 	}
-	
-	
+
 	void Run() {
-		
+
 		// in case the node is free (means that this node is not executing any
 		// packet)
 		if (status == true) {
@@ -49,22 +48,23 @@ public class Node {
 																					// executing
 																					// the
 																					// packet
-					
-					
+
 					boolean checkDeliveredBefore = true;
-					//remove the packet from the expected list of events
-					for(int i = 0; i < this.expectedPackets.size(); ++i){
-						if(this.currentPacket.id == expectedPackets.get(i).id){
+					// remove the packet from the expected list of events
+					for (int i = 0; i < this.expectedPackets.size(); ++i) {
+						if (this.currentPacket.id == expectedPackets.get(i).id) {
 							expectedPackets.remove(i);
 							checkDeliveredBefore = false;
 						}
 					}
-					//check if I have received the packet before or not
-					if(checkDeliveredBefore == true) {
-						generalInfo.packetDeliveredMoreThanOneTime++; //Increment the value
-						this.status = true; //change the status to get the following packet
+					// check if I have received the packet before or not
+					if (checkDeliveredBefore == true) {
+						generalInfo.packetDeliveredMoreThanOneTime++; // Increment
+																		// the
+																		// value
+						this.status = true; // change the status to get the
+											// following packet
 					}
-					
 
 					// check if there is a path for the packet, then send to the
 					// following node in the path
@@ -80,15 +80,12 @@ public class Node {
 						// current node to the destination of the packet
 						// change the pointer in the path to zero, change the
 						// content of the path for that packet
-						int[] newPath = server.GetNewPath(this.id,
-								this.currentPacket.destination,
-								this.currentPacket.size,
-								this.currentPacket.type);
+						int[] newPath = server.GetPath(generalInfo.allNodes.size(), this.id, this.currentPacket.destination, generalInfo.nodesConnections, this.currentPacket.size);
 						this.currentPacket.path = newPath;
 						this.currentPacket.pointInPath = 0; // assuming that the
 															// new path has the
 															// following node in
-															// the first spot
+															// the first element
 						nextNodeId = this.currentPacket.path[0];
 						// the check for the status of the following node will
 						// take place in the server path check
@@ -102,9 +99,7 @@ public class Node {
 					// current node to the destination of the packet
 					// change the pointer in the path to zero, change the
 					// content of the path for that packet
-					int[] newPath = server.GetNewPath(this.id,
-							this.currentPacket.destination,
-							this.currentPacket.size, this.currentPacket.type);
+					int[] newPath = server.GetPath(generalInfo.allNodes.size(), this.id, this.currentPacket.destination, generalInfo.nodesConnections, this.currentPacket.size);
 					this.currentPacket.path = newPath;
 					this.currentPacket.pointInPath = 0; // assuming that the new
 														// path has the
@@ -122,41 +117,46 @@ public class Node {
 		} else {
 			// check if the current packet has finished or not (if yes then
 			// change the status to free and do nothing)
-			int remainingTime = generalInfo.timeCounter - this.currentPacket.startServiceTime;
+			int remainingTime = generalInfo.timeCounter
+					- this.currentPacket.startServiceTime;
 			// here check if the packet will be finished in the following
 			// iteration (change the status, so that it gets the newPacket in
 			// the buffer)
 			if (remainingTime >= this.currentPacket.serviceTime - 1) {
-				
-				generalInfo.delivered.add(this.currentPacket); //adding the current packet to the delivered packets
-				
+
+				generalInfo.delivered.add(this.currentPacket); // adding the
+																// current
+																// packet to the
+																// delivered
+																// packets
+
 				this.status = true;
 			}
 
 		}
-		
-		
-		//check the list of expected packets if they are arrived or not
-		for(int i = 0; i < expectedPackets.size(); ++i){
-			if(generalInfo.timeCounter - expectedPackets.get(i).arrivelTime >= generalInfo.limitedTimeForPacket){
+
+		// check the list of expected packets if they are arrived or not
+		for (int i = 0; i < expectedPackets.size(); ++i) {
+			if (generalInfo.timeCounter - expectedPackets.get(i).arrivelTime >= generalInfo.limitedTimeForPacket) {
 				expectedPackets.get(i).arrivelTime = generalInfo.timeCounter;
-				
-				generalInfo.allNodes.get(expectedPackets.get(i).getDestination()).RequestedPacket(expectedPackets.get(i));
+
+				// increment the re-requested packets
+				generalInfo.rerequestedPackets++;
+
+				// copy to the buffer of the source node
+				generalInfo.allNodes.get(expectedPackets.get(i).source)
+						.RequestedPacket(expectedPackets.get(i));
 			}
 		}
-		
-		
+
 	}
-	//request the packet again (reinitialize the values)
-	void RequestedPacket(Packet newPacket){
-		Packet p = new Packet();
-		p.arrivelTime = generalInfo.timeCounter;
-		p.destination = newPacket.destination;
-		p.distanceTraveled = 0;
-		p.hasPath = false;
-		p.id = newPacket.id;
-		p.pointInPath = 0;
-		p.startServiceTime = 0;
+
+	// request the packet again (reinitialize the values)
+	void RequestedPacket(Packet newPacket) {
+		Packet p = new Packet(newPacket.type, newPacket.destination,
+				newPacket.source, generalInfo.timeCounter,
+				newPacket.serviceTime, newPacket.size, newPacket.id);
+
 		this.buffer.Push(p);
 	}
 }
