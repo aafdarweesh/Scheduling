@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class PacketQueue {
 	ArrayList<Packet> packetQueue;
-	int num = 10; // the number of items the queue should hold
-	GeneralInfo generalInfo;
+	int num = 1; // the number of items the queue should hold
+	//GeneralInfo generalInfo;
 	
 	
 	PacketQueue() {
@@ -52,12 +52,16 @@ public class PacketQueue {
 
 	// here we should check if it reaches the capacity will drop the packet and
 	// not add it to the queue
-	public void Push(Packet newPacket) {
-		
+	public void Push(Packet newPacket, GeneralInfo g) {
+		//System.out.println("ID "+newPacket.id);
 		if(this.full() == true) {
-			generalInfo.dropped.add(newPacket);
-			generalInfo.numberOfDroppedPackets++;
+			g.dropped.add(newPacket);
+			g.numberOfDroppedPackets++;
+			//System.out.println("Dropped");
 		}
-		else this.packetQueue.add(newPacket);
+		else {
+			//System.out.println("NOT Dropped");
+			this.packetQueue.add(newPacket);
+		}
 	}
 }
