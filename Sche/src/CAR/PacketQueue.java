@@ -48,7 +48,10 @@ public class PacketQueue {
 	// not add it to the queue
 	public void Push(Packet newPacket) {
 		
-		if(this.full() == true) generalInfo.dropped.add(newPacket);
+		if(this.full() == true) {
+			generalInfo.dropped.add(newPacket);
+			generalInfo.numberOfDroppedPackets++;
+		}
 		else this.packetQueue.add(newPacket);
 	}
 }
