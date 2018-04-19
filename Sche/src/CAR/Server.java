@@ -10,19 +10,10 @@ public class Server {
 	Server(GeneralInfo g){
 		this.general = g;
 	}
-	public void Run(){
-		
-	}
-	
-	/*
-	public void CheckNodesStatus(){
-		
-	}
-	*/
 	
 	//this function checks the shortest path between two nodes and return the path starting from the following node as a start not from the source node 
 	//so the path pointer should start from 0
-	public int[] GetPath(int n, int source, int destination, int[][] connections){
+	public int[] GetPath(int n, int source, int destination, int[][] connections, int size){
 		int[] prev = new int[n];
 		int[] dist = new int[n];
 		boolean[] check = new boolean[n];
@@ -33,17 +24,8 @@ public class Server {
 		}
 		//System.out.println(connections[0].length);
 		dist[source] = 0;
-		/*
-		for(int i = 0; i < n; ++i){
-			for(int j = 0; j < n; ++j){
-				System.out.print(connections[i][j]);
-			}
-			System.out.println();
-		}*/
 		
-		
-		//Dijkstra’s shortest path algorithm
-		
+		//Dijkstraâ€™s shortest path algorithm
 		ArrayList<Integer> arr = new ArrayList<Integer>();
 		arr.add(source);
 		while(arr.size() > 0){
@@ -72,12 +54,6 @@ public class Server {
 		
 		return path;
 	}
-	
-	
-	public int[] GetNewPath(int source, int destination, int size, int type){
-		return null;
-	}
-	
 	
 
 }
