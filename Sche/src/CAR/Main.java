@@ -9,25 +9,28 @@ public class Main {
 		
 		Server server = new Server(g);
 		Generator generator = new Generator(g,server);
-		/*
-		int n = 5;
-		int source = 3;
-		int destination = 0;
-		int[][] conn = {{0,0,1,0,0},{1,0,1,1,1}, {1,1,0,1,0}, {0,1,1,0,1}, {0,1,0,1,0}};
-		//System.out.println(conn[0].length);
-		int[] path = server.GetPath(n, source, destination, conn);
-		for(int i = 0; i < path.length; ++i){
-			System.out.println(path[i]);
-		}
-		*/
+
 		
 		generator.Run();
 		int counter = 0;
-		while(counter++ < 1000){
-					
-			//genaratedPackets
-			g.timeCounter++; //change the current time
+		
+		
+		for(int i = 0; i < g.allNodes.size(); ++i){
 			
+			for(int j= 0; j < g.allNodes.size(); ++j){
+				
+				System.out.print(" "+ g.nodesConnections[i][j]);
+				
+			}
+			System.out.print("\n");
+			
+		}
+		
+		while(counter++ < 100){
+			
+			if(g.delivered.size() == generator.totalNumOfPackets) break;
+					
+			System.out.println("=======================");
 			
 			
 			for(int i = 0; i < generator.totalNumOfPackets; ++i){
@@ -35,7 +38,6 @@ public class Main {
 				if(currentPacket.arrivelTime == g.timeCounter){
 					
 					int source = currentPacket.source;
-					//int destination = currentPacket.destination;
 					
 					boolean checkIfFullBuffer = g.allNodes.get(source).buffer.full();
 					if(checkIfFullBuffer == false){
@@ -51,6 +53,8 @@ public class Main {
 			for(int i = 0; i < g.allNodes.size(); ++i){
 				g.allNodes.get(i).Run();
 			}
+			
+			g.timeCounter++; //change the current time
 			
 			
 			//g.printToSystem();
