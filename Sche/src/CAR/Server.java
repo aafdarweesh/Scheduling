@@ -11,21 +11,19 @@ public class Server {
 		this.general = g;
 	}
 	
-	//this function checks the shortest path between two nodes and return the path starting from the following node as a start not from the source node 
-	//so the path pointer should start from 0
-	public int[] GetPath(int n, int source, int destination, int[][] connections, int size){
+	public ArrayList<Integer> GetPath(int n, int source, int destination, int[][] connections, int size){
 		int[] prev = new int[n];
 		int[] dist = new int[n];
 		boolean[] check = new boolean[n];
 		for(int i = 0; i < n; ++i){
 			dist[i] = 2000000000;
 			prev[i] = -1; 
-			check[i] = false;
+			if(general.allNodes.get(i).notfailure == false) check[i] = true;
+			else check[i] = false;
 		}
-		//System.out.println(connections[0].length);
+
 		dist[source] = 0;
 		
-		//Dijkstra’s shortest path algorithm
 		ArrayList<Integer> arr = new ArrayList<Integer>();
 		arr.add(source);
 		while(arr.size() > 0){
@@ -41,16 +39,21 @@ public class Server {
 			}
 		}
 		
-		//System.out.println(dist[destination]);
-		//System.out.println("\n\n\n");
-		int[] path = new int[dist[destination]];
+
+		ArrayList<Integer> path = new ArrayList<Integer>();
 		int cnt = destination;
-		//path[0] = cnt;
-		for(int i = dist[destination] - 1; i > 0 ; --i){
+		
+		System.out.print("path from  "+ source + " to "+destination);
+	
+		for(int i = 0; i < n; ++i){
+			System.out.print(" "+ cnt);
+			
+			path.add(cnt);
+			if(cnt == source || cnt > n) break;
 			cnt = prev[cnt];
-			path[i-1] = cnt;
 		}
-		path[dist[destination] - 1] = destination;
+		
+		System.out.print("\n");
 		
 		return path;
 	}
