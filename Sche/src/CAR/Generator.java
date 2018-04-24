@@ -54,8 +54,7 @@ public class Generator {
 			System.out.print("Enter the number of package of type "+ (i + 1)  + " :");
 			in = new Scanner(System.in);
 			numOfpacket = in.nextInt();
-			numOfPacketList.add(numOfpacket); // storing the number of packets
-												// arriving to the system
+			numOfPacketList.add(numOfpacket); 
 			totalNumOfPackets = totalNumOfPackets + numOfpacket;
 
 		}
@@ -63,8 +62,7 @@ public class Generator {
 
 	public void storeServiceTimeForPacket() {
 		int packageTime;
-		for (int i = 0; i < numOfpacketType; i++) // storing the service time
-													// for each package
+		for (int i = 0; i < numOfpacketType; i++) 
 		{
 			System.out.print("\nEnter the service time for package"
 					+ (i + 1) + " :");
@@ -93,7 +91,6 @@ public class Generator {
 
 		for (int i = 0; i < totalNumOfPackets; i++) {
 			time = time + arrivalRate.get(i);
-			// System.out.println("time "+time);
 			arrivalTime.add(time);
 		}
 	}
@@ -108,7 +105,6 @@ public class Generator {
 
 		int idcounter = 0;
 
-		/* saving the vauls inside the array */
 		while (j < numOfpacketType) {
 			while (count < numOfPacketList.get(j)) {
 
@@ -132,22 +128,17 @@ public class Generator {
 				
 				System.out.println("Packet id" + (idcounter - 1) + ", source : " + source + " destination : "+ destination);
 				
-				/*
-				 * p.destination = destination; p.source = source; p.serviceTime
-				 * = serviceTimeForEachPacket.get(j); p.type = j + 1;
-				 */
+			
 				genaratedPackets.add(p);
 
 				count++;
-				// i++;
 			}
 
 			j++;
 			count = 0;
 
 		}
-		for (i = 0; i < totalNumOfPackets; i++) // reorganizing the events
-												// randomly
+		for (i = 0; i < totalNumOfPackets; i++) 
 		{
 			for (j = 0; j < totalNumOfPackets; j++) {
 
@@ -166,7 +157,6 @@ public class Generator {
 
 			}
 
-			// adding arrival time
 			for (i = 0; i < totalNumOfPackets; i++) {
 
 				genaratedPackets.get(i).arrivelTime = arrivalTime.get(i);
@@ -174,6 +164,17 @@ public class Generator {
 			}
 
 		}
+		System.out.println("List of Generated");
+		for( i = 0; i < totalNumOfPackets; ++i){
+			System.out.print("ID "+genaratedPackets.get(i).id);
+			System.out.print(", Type "+genaratedPackets.get(i).type);
+			System.out.print(", arrival time "+genaratedPackets.get(i).arrivelTime);
+			System.out.print(", service time "+genaratedPackets.get(i).serviceTime);
+			System.out.print(", destination "+genaratedPackets.get(i).destination);
+			System.out.println(", source "+genaratedPackets.get(i).source);
+		}
+		
+		
 	}
 
 	public void GenerateNodes() {
@@ -190,7 +191,6 @@ public class Generator {
 
 	}
 
-	// this function will define the connection between the nodes
 	public void GenerateConnectionBetweenNodes() {
 		int n = general.allNodes.size();
 		general.nodesConnections = new int[n][n];
@@ -203,7 +203,7 @@ public class Generator {
 					continue;
 				general.nodesConnections[i][j] = general.nodesConnections[j][i] = 0;
 				rando = rand.nextInt(50) + 1;
-				if (rando > 35)
+				if (rando > 40)
 					general.nodesConnections[i][j] = general.nodesConnections[j][i] = 1;
 			}
 		}
